@@ -2,7 +2,10 @@ module github.com/Roman77St/player
 
 go 1.25.3
 
-require fyne.io/fyne/v2 v2.7.2
+require (
+	fyne.io/fyne/v2 v2.7.2
+	github.com/Roman77St/playsound v0.0.0-20260209142217-961d1dbbe70a
+)
 
 require (
 	github.com/ebitengine/oto/v3 v3.4.0 // indirect
@@ -16,7 +19,6 @@ require (
 require (
 	fyne.io/systray v1.12.0 // indirect
 	github.com/BurntSushi/toml v1.5.0 // indirect
-	github.com/Roman77St/playsound v0.0.0-20260206141156-16fb7490b033 // indirect
 	github.com/davecgh/go-spew v1.1.1 // indirect
 	github.com/fredbi/uri v1.1.1 // indirect
 	github.com/fsnotify/fsnotify v1.9.0 // indirect

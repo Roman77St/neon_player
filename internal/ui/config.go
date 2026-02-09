@@ -9,7 +9,7 @@ const (
 	// Основной экран
 	MainWindowWidth  = 950
 	MainWindowHeight = 500
-	MainImagePath    = "img/song1.png"
+	MainImagePath    = "assets/song1.png"
 	MainImageWidth   = 350
 	MainImageHeight  = 500
 
