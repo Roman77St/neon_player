@@ -52,7 +52,7 @@ func createCustomProgressBar() (binding.Float, binding.String, *fyne.Container) 
 
 	progressData.AddListener(binding.NewDataListener(func() {
 		val, _ := progressData.Get()
-		bar.SetMinSize(fyne.NewSize(ProgressBarWidth * float32(val), ProgressBarHeight))
+		bar.SetMinSize(fyne.NewSize(ProgressBarWidth*float32(val), ProgressBarHeight))
 		bar.Refresh()
 	}))
 
@@ -78,17 +78,21 @@ func (b *clickableBar) Tapped(e *fyne.PointEvent) {
 	// e.Position.X — координата клика
 	// b.Size().Width — общая ширина полоски
 	w := b.Size().Width
-    if w <= 0 {
-        return // Защита от деления на ноль
-    }
+	if w <= 0 {
+		return // Защита от деления на ноль
+	}
 	percent := float64(e.Position.X / b.Size().Width)
-	if percent < 0 { percent = 0 }
-	if percent > 0.99 { percent = 0.99 }
+	if percent < 0 {
+		percent = 0
+	}
+	if percent > 0.99 {
+		percent = 0.99
+	}
 	b.onSeek(percent)
 }
 
 // Нужно для реализации интерфейса Tappable
 func (b *clickableBar) CreateRenderer() fyne.WidgetRenderer {
-    rect := canvas.NewRectangle(color.Transparent)
-    return widget.NewSimpleRenderer(rect)
+	rect := canvas.NewRectangle(color.Transparent)
+	return widget.NewSimpleRenderer(rect)
 }

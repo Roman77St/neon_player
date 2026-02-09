@@ -65,7 +65,7 @@ func NewMainScreen(window fyne.Window) fyne.CanvasObject {
 	// Изображение обложки
 	img := canvas.NewImageFromFile(MainImagePath)
 	img.FillMode = canvas.ImageFillContain
-	img.SetMinSize(fyne.NewSize(MainImageSize, 500))
+	img.SetMinSize(fyne.NewSize(MainImageWidth, MainImageHeight))
 
 	leftSection := container.NewHBox(
 		container.NewPadded(menuIcons),

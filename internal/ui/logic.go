@@ -67,9 +67,9 @@ func runProgress(c chan struct{}, data binding.Float, timeData binding.String, b
 				percentage := pos / dur
 				data.Set(percentage)
 				newTimeStr := fmt.Sprintf("%s / %s", formatTime(pos), formatTime(dur))
-                timeData.Set(newTimeStr)
-   			 }
-	    }
+				timeData.Set(newTimeStr)
+			}
+		}
 	}
 }
 

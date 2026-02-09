@@ -49,7 +49,9 @@ func CreateNewTrackRow(path, name string, trackList *fyne.Container) fyne.Canvas
 	wholeRow = assembleTrackRowLayout(name, btnPlay, clickableProgress, timeLabel, vol, deleteBtn)
 
 	deleteBtn.OnTapped = func() {
-		if done != nil { playsound.Stop(done) }
+		if done != nil {
+			playsound.Stop(done)
+		}
 		trackList.Remove(wholeRow)
 	}
 
@@ -78,8 +80,8 @@ func assembleTrackRowLayout(name string, btn *widget.Button, progress *fyne.Cont
 	content := container.NewBorder(
 		nil,
 		nil,
-		container.NewPadded(fixedPlayBtn), // Слева (Play)
-		del, // Справа (Удалить)
+		container.NewPadded(fixedPlayBtn),  // Слева (Play)
+		del,                                // Справа (Удалить)
 		container.NewPadded(centerContent), // Центр (Название, Бар, Громкость, Время)
 	)
 
