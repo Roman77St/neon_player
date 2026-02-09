@@ -6,17 +6,17 @@ require fyne.io/fyne/v2 v2.7.2
 
 require (
 	github.com/ebitengine/oto/v3 v3.4.0 // indirect
-	github.com/ebitengine/purego v0.9.0 // indirect
+	github.com/ebitengine/purego v0.9.1 // indirect
 	github.com/hajimehoshi/go-mp3 v0.3.4 // indirect
 	github.com/youpy/go-riff v0.1.0 // indirect
 	github.com/youpy/go-wav v0.3.2 // indirect
-	github.com/zaf/g711 v0.0.0-20190814101024-76a4a538f52b // indirect
+	github.com/zaf/g711 v1.4.0 // indirect
 )
 
 require (
 	fyne.io/systray v1.12.0 // indirect
 	github.com/BurntSushi/toml v1.5.0 // indirect
-	github.com/Roman77St/playsound v0.0.0-20260202161005-59d89ecf26e8
+	github.com/Roman77St/playsound v0.0.0-20260206141156-16fb7490b033 // indirect
 	github.com/davecgh/go-spew v1.1.1 // indirect
 	github.com/fredbi/uri v1.1.1 // indirect
 	github.com/fsnotify/fsnotify v1.9.0 // indirect
@@ -44,7 +44,9 @@ require (
 	github.com/yuin/goldmark v1.7.8 // indirect
 	golang.org/x/image v0.24.0 // indirect
 	golang.org/x/net v0.35.0 // indirect
-	golang.org/x/sys v0.36.0 // indirect
+	golang.org/x/sys v0.40.0 // indirect
 	golang.org/x/text v0.22.0 // indirect
 	gopkg.in/yaml.v3 v3.0.1 // indirect
 )
+
+replace github.com/Roman77St/playsound => ../playsound

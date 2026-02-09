@@ -1,6 +1,8 @@
 package ui
 
 import (
+	"image/color"
+
 	"fyne.io/fyne/v2"
 	"fyne.io/fyne/v2/canvas"
 	"fyne.io/fyne/v2/container"
@@ -8,6 +10,12 @@ import (
 	"fyne.io/fyne/v2/theme"
 	"fyne.io/fyne/v2/widget"
 )
+
+// Тип для кликабельной полоски
+type clickableBar struct {
+	widget.BaseWidget
+	onSeek func(float64) // callback, который вернет процент клика
+}
 
 // createPlayButton создает кнопку воспроизведения с динамическим текстом и иконкой
 func createPlayButton() (*widget.Button, binding.String) {
@@ -29,9 +37,12 @@ func createPlayButton() (*widget.Button, binding.String) {
 }
 
 // createCustomProgressBar создает тонкую неоновую полоску прогресса
-func createCustomProgressBar() (binding.Float, *fyne.Container) {
+func createCustomProgressBar() (binding.Float, binding.String, *fyne.Container) {
 	progressData := binding.NewFloat()
 	progressData.Set(0)
+
+	timeData := binding.NewString()
+	timeData.Set("00:00 / 00:00")
 
 	bg := canvas.NewRectangle(ColorProgressBg)
 	bg.SetMinSize(fyne.NewSize(TrackInfoWidth, ProgressBarHeight))
@@ -46,8 +57,7 @@ func createCustomProgressBar() (binding.Float, *fyne.Container) {
 	}))
 
 	container := container.NewStack(bg, container.NewHBox(bar))
-	container.Hide()
-	return progressData, container
+	return progressData, timeData, container
 }
 
 // createVolumeSlider создает слайдер громкости
@@ -61,4 +71,24 @@ func createVolumeSlider() *widget.Slider {
 // createDeleteButton создает кнопку удаления
 func createDeleteButton() *widget.Button {
 	return widget.NewButtonWithIcon("", theme.DeleteIcon(), nil)
+}
+
+// Клик по полоске бара
+func (b *clickableBar) Tapped(e *fyne.PointEvent) {
+	// e.Position.X — координата клика
+	// b.Size().Width — общая ширина полоски
+	w := b.Size().Width
+    if w <= 0 {
+        return // Защита от деления на ноль
+    }
+	percent := float64(e.Position.X / b.Size().Width)
+	if percent < 0 { percent = 0 }
+	if percent > 0.99 { percent = 0.99 }
+	b.onSeek(percent)
+}
+
+// Нужно для реализации интерфейса Tappable
+func (b *clickableBar) CreateRenderer() fyne.WidgetRenderer {
+    rect := canvas.NewRectangle(color.Transparent)
+    return widget.NewSimpleRenderer(rect)
 }

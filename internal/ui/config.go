@@ -15,17 +15,18 @@ const (
 	// Размеры элементов в TrackRow
 	TrackRowHeight     = 60
 	TrackInfoWidth     = 200
-	TrackInfoHeight    = 45
-	PlayBtnWidth       = 120
+	TrackInfoHeight    = 80
+	PlayBtnWidth       = 100
+	PlayBtnHeight      = TrackInfoHeight
 	VolumeSliderWidth  = 150
 	DeleteBtnWidth     = 40
 	ControlHeight      = 40
 
 	// Параметры прогресс-бара
-	ProgressBarHeight  = 2
+	ProgressBarHeight  = 10
 	ProgressBarWidth   = 200
 	ProgressStep       = 0.01 // Шаг обновления (1%)
-	ProgressInterval   = 500  // Мс между обновлениями
+	ProgressInterval   = 100  // Мс между обновлениями
 
 	// Параметры звука
 	VolumeStep         = 0.01

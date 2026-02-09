@@ -1,6 +1,7 @@
 package ui
 
 import (
+	"fmt"
 	"time"
 
 	"fyne.io/fyne/v2"
@@ -10,7 +11,7 @@ import (
 )
 
 // handlePlayTap управляет началом воспроизведения и запуском симуляции прогресса
-func handlePlayTap(path string, done *chan struct{}, vol *widget.Slider, btnText binding.String, progData binding.Float, progCont *fyne.Container) {
+func handlePlayTap(path string, done *chan struct{}, vol *widget.Slider, btnText binding.String, timeData binding.String, progData binding.Float, progCont *fyne.Container) {
 	if *done == nil {
 		d, err := playsound.PlaySound(path)
 		if err != nil {
@@ -21,7 +22,7 @@ func handlePlayTap(path string, done *chan struct{}, vol *widget.Slider, btnText
 		btnText.Set("Pause")
 		progCont.Show()
 
-		go runProgressSimulation(d, progData, progCont, btnText, func() {
+		go runProgress(d, progData, timeData, btnText, func() {
 			*done = nil
 		})
 	} else {
@@ -42,25 +43,54 @@ func handlePlaybackToggle(done chan struct{}, btnText binding.String, currentVol
 	}
 }
 
-// runProgressSimulation имитирует движение полоски прогресса
-func runProgressSimulation(c chan struct{}, data binding.Float, cont *fyne.Container, btnText binding.String, collBack func()) {
+// runProgress опрашивает движок о текущем положении и обновляет UI
+func runProgress(c chan struct{}, data binding.Float, timeData binding.String, btnText binding.String, callback func()) {
+	dur, errDur := playsound.GetDuration(c)
+	if errDur != nil || dur <= 0 {
+		dur = 1
+	}
+
 	ticker := time.NewTicker(time.Millisecond * ProgressInterval)
 	defer ticker.Stop()
-	var current float32 = 0
 
 	for {
 		select {
 		case <-c:
 			btnText.Set("Play")
 			data.Set(0)
-			cont.Hide()
-			collBack()
+			// cont.Hide()
+			callback()
 			return
 		case <-ticker.C:
-			if current < 1.0 {
-				current += ProgressStep
-				data.Set(float64(current))
-			}
-		}
+			pos, err := playsound.GetPosition(c)
+			if err == nil && dur > 0 {
+				percentage := pos / dur
+				data.Set(percentage)
+				newTimeStr := fmt.Sprintf("%s / %s", formatTime(pos), formatTime(dur))
+                timeData.Set(newTimeStr)
+   			 }
+	    }
 	}
+}
+
+// handleSeek перематывает трек на указанный процент (0.0 - 1.0)
+func handleSeek(done chan struct{}, percent float64) {
+	if done == nil {
+		return
+	}
+	dur, err := playsound.GetDuration(done)
+	if err != nil || dur <= 0 {
+		return
+	}
+
+	// Вычисляем целевое время в секундах
+	targetTime := dur * percent
+	playsound.Seek(done, targetTime)
+}
+
+// Вспомогательная функция для превращения секунд в 00:00
+func formatTime(seconds float64) string {
+	minutes := int(seconds) / 60
+	secs := int(seconds) % 60
+	return fmt.Sprintf("%02d:%02d", minutes, secs)
 }
